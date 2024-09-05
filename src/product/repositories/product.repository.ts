@@ -73,8 +73,4 @@ export class ProductService {
       where: { id },
     });
   }
-
-  checkExpiryDate(expiry_date: Date) {
-    return expiry_date < new Date();
-  }
 }
