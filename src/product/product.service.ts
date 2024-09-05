@@ -3,7 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './models/product.model';
 import { where } from 'sequelize';
-import { ExpiryDate } from './shared/errors/expiry-date.error';
+import { ExpiryDate } from '../errors/expiry-date.error';
 
 @Injectable()
 export class ProductService {
