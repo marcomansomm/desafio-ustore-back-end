@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
+import { where } from 'sequelize';
 
 @Injectable()
 export class ProductService {
@@ -9,23 +10,33 @@ export class ProductService {
     @Inject('PRODUCT_REPOSITORY')
     private productsRepository: typeof Product
   ) {}
-  create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+  async create(createProductDto: CreateProductDto): Promise<Product> {
+    const product = new Product();
+    product.name = createProductDto.name;
+    product.price = createProductDto.price;
+    const productData = await product.save();
+    return productData;
   }
 
-  findAll() {
-    return `This action returns all product`;
+  findAll(): Promise<Product[]> {
+    return this.productsRepository.findAll<Product>();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} product`;
+    return this.productsRepository.findOne({
+      where: { id },
+    });
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+    return this.productsRepository.update(updateProductDto, {
+      where: { id },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} product`;
+    return this.productsRepository.destroy({
+      where: { id },
+    });
   }
 }
