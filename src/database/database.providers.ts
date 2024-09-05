@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import { Product } from '../product/entities/product.entity';
+import { Product } from '../product/models/product.model';
 
 export const databaseProviders = [
   {
