@@ -1,15 +1,6 @@
 version: '3'
 
 services:
-  nest-app:
-    build: .
-    ports:
-      - '4000:3000'
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: npm run start:prod
-
   mysql-db:
     image: mysql:8.0
     container_name: desafio-ustore
@@ -20,6 +11,15 @@ services:
       - '3307:3306'
     volumes:
       - mysql_data:/var/lib/mysql
+
+  nest-app:
+    build: .
+    ports:
+      - '4000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run start:prod
 
 volumes:
   mysql_data:
