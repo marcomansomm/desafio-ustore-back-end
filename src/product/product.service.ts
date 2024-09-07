@@ -4,39 +4,50 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './models/product.model';
 import { where } from 'sequelize';
 import { ExpiryDate } from '../errors/expiry-date.error';
+import {
+  ProductPagination,
+  ProductRepository,
+} from './repositories/product.repository';
+import { NotFound } from 'src/errors/not-found.error';
 
 @Injectable()
 export class ProductService {
-  constructor(
-    @Inject('PRODUCT_REPOSITORY')
-    private productsRepository: typeof Product
-  ) {}
+  constructor(private productsRepository: ProductRepository) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
     try {
       const product = new Product();
-      product.name = createProductDto.name;
+      product.describe = createProductDto.describe;
       product.price = createProductDto.price;
-      product.expiry_date = createProductDto.expiry_date ? new Date(createProductDto.expiry_date) : null;
-      
-      if(!product.expiry_date) {
-        throw new ExpiryDate('Não é possivel cadastrar um produto sem data de validade');
+      product.expiry_date = createProductDto.expiry_date
+        ? new Date(createProductDto.expiry_date)
+        : null;
+
+      if (!product.expiry_date) {
+        throw new ExpiryDate(
+          'Não é possivel cadastrar um produto sem data de validade',
+        );
       }
 
-      if(this.checkExpiryDate(product.expiry_date)) {
+      if (this.checkExpiryDate(product.expiry_date)) {
         throw new ExpiryDate('Não é possivel cadastrar um produto vencido');
       }
-      
-      const productData = await product.save();
+
+      const productData = await this.productsRepository.create(product);
       return productData;
     } catch (error) {
       throw error;
     }
   }
 
-  async findAll(): Promise<Product[]> {
+  async findAll(queryFilters: ProductPagination): Promise<{
+    totalItems: number;
+    totalPages: number;
+    currentPage: number;
+    products: Product[];
+  }> {
     try {
-      return await this.productsRepository.findAll<Product>();
+      return await this.productsRepository.findAll(queryFilters);
     } catch (error) {
       throw error;
     }
@@ -44,34 +55,44 @@ export class ProductService {
 
   async findOne(id: number): Promise<Product> {
     try {
-      return await this.productsRepository.findOne({
-        where: { id },
-      });
+      const product = await this.productsRepository.findOne(id);
+
+      if (!product) {
+        throw new NotFound('Produto não encontrado');
+      }
+
+      return await this.productsRepository.findOne(id);
     } catch (error) {
       throw error;
     }
-    
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
     try {
-      if(this.checkExpiryDate(new Date(updateProductDto.expiry_date))) {
-        throw new ExpiryDate('Não é possivel atualizar um produto vencido');
-      } 
+      const product = await this.productsRepository.findOne(id);
 
-      return this.productsRepository.update(updateProductDto, {
-        where: { id },
-      });
+      if (!product) {
+        throw new NotFound('Produto não encontrado');
+      }
+
+      if (this.checkExpiryDate(new Date(updateProductDto.expiry_date))) {
+        throw new ExpiryDate('Não é possivel atualizar um produto vencido');
+      }
+
+      return this.productsRepository.update(id, updateProductDto);
     } catch (error) {
       throw error;
     }
-    
   }
 
-  remove(id: number) {
-    return this.productsRepository.destroy({
-      where: { id },
-    });
+  async remove(id: number) {
+    const product = await this.productsRepository.findOne(id);
+
+    if (!product) {
+      throw new NotFound('Produto não encontrado');
+    }
+
+    return this.productsRepository.remove(id);
   }
 
   checkExpiryDate(expiry_date: Date) {

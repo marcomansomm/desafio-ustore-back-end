@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductPagination } from './repositories/product.repository';
 
 @Controller('products')
 export class ProductController {
@@ -17,8 +27,8 @@ export class ProductController {
   }
 
   @Get()
-  async findAll() {
-    const products = await this.productService.findAll();
+  async findAll(@Query() queryFilters: ProductPagination) {
+    const products = await this.productService.findAll(queryFilters);
     return {
       statusCode: 200,
       message: 'Produtos listados com sucesso!',
@@ -37,7 +47,10 @@ export class ProductController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
     await this.productService.update(+id, updateProductDto);
     return {
       statusCode: 200,

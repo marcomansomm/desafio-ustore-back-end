@@ -1,7 +1,13 @@
-import { Table, Column, Model, DataType, PrimaryKey } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  PrimaryKey,
+} from 'sequelize-typescript';
 
 @Table({
-  tableName: 'products'
+  tableName: 'products',
 })
 export class Product extends Model {
   @PrimaryKey
@@ -10,12 +16,12 @@ export class Product extends Model {
     autoIncrement: true,
   })
   id: number;
-  
+
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  name: string;
+  describe: string;
 
   @Column({
     type: 'DECIMAL(10, 2)',

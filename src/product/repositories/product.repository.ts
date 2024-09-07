@@ -1,42 +1,52 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { Product } from './models/product.model';
+import { CreateProductDto } from '../dto/create-product.dto';
+import { UpdateProductDto } from '../dto/update-product.dto';
+import { Product } from '../models/product.model';
 import { where } from 'sequelize';
-import { ExpiryDate } from './shared/errors/expiry-date.error';
+import { ExpiryDate } from '../../errors/expiry-date.error';
+
+export interface ProductPagination {
+  page: number;
+  limit: number;
+}
 
 @Injectable()
-export class ProductService {
+export class ProductRepository {
   constructor(
     @Inject('PRODUCT_REPOSITORY')
-    private productsRepository: typeof Product
+    private productsRepository: typeof Product,
   ) {}
 
-  async create(createProductDto: CreateProductDto): Promise<Product> {
+  async create(product: Product): Promise<Product> {
     try {
-      const product = new Product();
-      product.name = createProductDto.name;
-      product.price = createProductDto.price;
-      product.expiry_date = createProductDto.expiry_date ? new Date(createProductDto.expiry_date) : null;
-      
-      if(!product.expiry_date) {
-        throw new ExpiryDate('Não é possivel cadastrar um produto sem data de validade');
-      }
-
-      if(this.checkExpiryDate(product.expiry_date)) {
-        throw new ExpiryDate('Não é possivel cadastrar um produto vencido');
-      }
-      
-      const productData = await product.save();
-      return productData;
+      return await product.save();
     } catch (error) {
       throw error;
     }
   }
 
-  async findAll(): Promise<Product[]> {
+  async findAll(queryFilters: ProductPagination): Promise<{
+    totalItems: number;
+    totalPages: number;
+    currentPage: number;
+    products: Product[];
+  }> {
+    console.log(queryFilters);
     try {
-      return await this.productsRepository.findAll<Product>();
+      const { page, limit } = queryFilters;
+      const offset = page * limit - limit;
+
+      const { count, rows } = await this.productsRepository.findAndCountAll({
+        limit: parseInt(limit.toString()),
+        offset: parseInt(offset.toString()),
+      });
+
+      return {
+        totalItems: count,
+        totalPages: Math.ceil(count / limit),
+        currentPage: parseInt(page.toString()),
+        products: rows,
+      };
     } catch (error) {
       throw error;
     }
@@ -50,26 +60,20 @@ export class ProductService {
     } catch (error) {
       throw error;
     }
-    
   }
 
-  async update(id: number, updateProductDto: UpdateProductDto) {
+  async update(id: number, updateProduct: UpdateProductDto) {
     try {
-      if(this.checkExpiryDate(new Date(updateProductDto.expiry_date))) {
-        throw new ExpiryDate('Não é possivel atualizar um produto vencido');
-      } 
-
-      return this.productsRepository.update(updateProductDto, {
+      return this.productsRepository.update(updateProduct, {
         where: { id },
       });
     } catch (error) {
       throw error;
     }
-    
   }
 
-  remove(id: number) {
-    return this.productsRepository.destroy({
+  async remove(id: number) {
+    return await this.productsRepository.destroy({
       where: { id },
     });
   }
