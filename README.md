@@ -76,6 +76,7 @@ Uma vez que a aplicação esteja rodando, você pode acessar os endpoints atrav�
 {
   "describe": "Filé bovino",
   "price": 10,
+	"quantity": 2,
   "expiry_date": "2024-09-30"
 }
 ```
