@@ -1,85 +1,110 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Desafio UStore - API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Bem-vindo à API do Desafio UStore! Este projeto é uma API desenvolvida utilizando [NestJS](https://nestjs.com/), conectada a um banco de dados MySQL.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Pré-requisitos
 
-## Description
+Antes de rodar esta API, você precisará ter instalado em sua máquina:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [NodeJS](https://nodejs.org/en) (v18.x ou superior)
+- [Nest.js](https://nestjs.com/) (v10.x ou superior)
+- [MySQL](https://www.mysql.com/) (versão 8.x)
+- Um cliente MySQL, como o [MySQL Workbench](https://www.mysql.com/products/workbench/) ou o [DBeaver](https://dbeaver.io/)
 
-## Project setup
+## Instalação
+
+### 1. Clonando o Repositório
+
+Comece clonando o repositório em sua máquina local:
 
 ```bash
-$ npm install
+git clone https://github.com/seuusuario/desafio-ustore.git
+cd desafio-ustore
 ```
 
-## Compile and run the project
+### 2. Instalando Dependências
+
+Instale as dependências do projeto utilizando o NPM:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+### 3. Criar o Banco de Dados no MySQL
+
+Antes de rodar a aplicação, crie um banco de dados chamado desafio_ustore no MySQL. Você pode fazer isso diretamente no terminal ou utilizando um cliente MySQL.
+
+Exemplo utilizando o terminal MySQL:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+CREATE DATABASE desafio_ustore;
 ```
 
-## Resources
+Observação: Certifique-se de que o MySQL está rodando na sua máquina.
 
-Check out a few resources that may come in handy when working with NestJS:
+### 4. Configuração do Banco de Dados
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Certifique-se de que suas configurações de banco de dados (usuário, senha, host, etc.) estão corretas no arquivo de configuração da aplicação. Por padrão, o arquivo de configuração se conecta ao banco de dados MySQL usando os seguintes parâmetros:
 
-## Support
+- Usuário: root
+- Senha: 123456
+- Host: localhost
+- Porta: 3306
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Se precisar alterar essas configurações, vá até o arquivo src/config/database.config.ts e modifique conforme necessário.
 
-## Stay in touch
+### 5. Rodando a Aplicação
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Para rodar a API localmente com Node.js, use o comando:
 
-## License
+```bash
+npm run start:dev
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Isso iniciará a API no modo de desenvolvimento. Ela ficará disponível em http://localhost:3000.
+
+### 6. Testando a API
+
+Uma vez que a aplicação esteja rodando, você pode acessar os endpoints através de um cliente REST como o [Postman]('https://www.postman.com/') ou [Insomnia]('https://insomnia.rest/download').
+
+**GET** `http://localhost:3000/products` - Lista todos os produtos  
+**POST** `http://localhost:3000/products` - Cria um novo produto (envie um JSON no corpo da requisição)
+
+### Payload de Exemplo para Criar e Atualizar um Produto:
+
+```json
+{
+  "describe": "Filé bovino",
+  "price": 10,
+  "expiry_date": "2024-09-30"
+}
+```
+
+## Endpoints Principais
+
+Aqui estão alguns dos principais endpoints disponíveis na API:
+
+- **GET** `/products` - Retorna a lista de todos os produtos
+- **POST** `/products` - Cria um novo produto
+- **GET** `/products/:id` - Retorna um produto específico por ID
+- **PUT** `/products/:id` - Atualiza um produto por ID
+- **DELETE** `/products/:id` - Deleta um produto por ID
+
+## Tecnologias Utilizadas
+
+- **Node.js** - Ambiente de execução JavaScript
+- **NestJS** - Framework para construção de APIs robustas e escaláveis
+- **MySQL** - Banco de dados relacional
+- **Docker** - Contêinerização da aplicação
+
+## Contribuições
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request com melhorias, correções de bugs ou novas funcionalidades.
+
+## Licença
+
+Este projeto é licenciado sob a [MIT License](https://opensource.org/licenses/MIT).
+
+```
+
+```
