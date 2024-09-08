@@ -6,7 +6,7 @@ services:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: desafio_ustore
     ports:
-      - '3307:3306'
+      - '3406:3306'
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -14,6 +14,8 @@ services:
     build: .
     ports:
       - '4000:3000'
+    depends_on:
+      - mysql-db
     volumes:
       - .:/app
       - /app/node_modules

@@ -5,10 +5,21 @@ export const databaseProviders = [
   {
     provide: 'SEQUELIZE',
     useFactory: async () => {
+      const sequelizetest = {
+        dialect: 'mysql',
+        host: 'mysql-db',
+        port: 3306,
+        username: 'root',
+        password: '123456',
+        database: 'desafio_ustore',
+      };
+
+      console.log(sequelizetest);
+
       const sequelize = new Sequelize({
         dialect: 'mysql',
-        host: 'localhost',
-        port: 3307,
+        host: 'mysql-db',
+        port: 3306,
         username: 'root',
         password: '123456',
         database: 'desafio_ustore',
