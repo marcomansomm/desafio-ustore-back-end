@@ -19,6 +19,7 @@ export class ProductService {
       const product = new Product();
       product.describe = createProductDto.describe;
       product.price = createProductDto.price;
+      product.quantity = createProductDto.quantity;
       product.expiry_date = createProductDto.expiry_date
         ? new Date(createProductDto.expiry_date)
         : null;

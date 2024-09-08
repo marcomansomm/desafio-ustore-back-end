@@ -30,6 +30,12 @@ export class Product extends Model {
   price: number;
 
   @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  quantity: number;
+
+  @Column({
     type: DataType.DATE,
     allowNull: false,
   })

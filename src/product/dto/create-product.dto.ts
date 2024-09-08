@@ -10,6 +10,10 @@ export class CreateProductDto {
   readonly price: number;
 
   @IsNotEmpty()
+  @IsNumber()
+  readonly quantity: number;
+
+  @IsNotEmpty()
   @IsDateString()
   readonly expiry_date: string;
 }
