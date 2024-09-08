@@ -18,8 +18,8 @@ Antes de rodar esta API, você precisará ter instalado em sua máquina:
 Comece clonando o repositório em sua máquina local:
 
 ```bash
-git clone https://github.com/seuusuario/desafio-ustore.git
-cd desafio-ustore
+git clone https://github.com/marcomansomm/desafio-ustore-back-end.git
+cd desafio-ustore-back-end
 ```
 
 ### 2. Instalando Dependências
